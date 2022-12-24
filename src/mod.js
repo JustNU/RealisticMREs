@@ -111,10 +111,12 @@ class Mod {
 			}
 			
 			// change FIR accordingly to opened item FIR status
-			if (openedItem.upd.SpawnedInSession) {
-				rewardContainerDetails.foundInRaid = true;
-			} else {
-				rewardContainerDetails.foundInRaid = false;
+			rewardContainerDetails.foundInRaid = false;
+			
+			if (openedItem.upd) {
+				if (openedItem.upd.SpawnedInSession === true) {
+					rewardContainerDetails.foundInRaid = true;
+				}
 			}
 		} else {
 			for (let index = 0; index < rewardContainerDetails.rewardCount; index++) {
