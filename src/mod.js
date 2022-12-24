@@ -19,7 +19,6 @@ class Mod {
 	postDBLoad(container) {
 		const logger = container.resolve("WinstonLogger");
 		const database = container.resolve("DatabaseServer").getTables();
-		const config = require("../config/config.json");
 		const modDb = require("../db/items/itemData.json");
 		
 		// replace iskra in database
@@ -66,7 +65,17 @@ class Mod {
 				
 				// add to new item request
 				if (itemCount > 0) {
-					newItemRequest.items.push({item_id: inventoryController.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool.loot[itemCategory]), count: itemCount});
+					for (let i = 0; i < itemCount; i++) {
+						const chosenRewardItemTpl = inventoryController.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool.loot[itemCategory]);
+						const existingItemInRequest = newItemRequest.items.find(x => x.item_id == chosenRewardItemTpl);
+						
+						if (existingItemInRequest) {
+							// Exists in request already, increment count
+							existingItemInRequest.count++;
+						} else {
+							newItemRequest.items.push({item_id: chosenRewardItemTpl, count: 1});
+						}
+					}
 				}
 			}
 			
@@ -78,7 +87,15 @@ class Mod {
 			}
 		} else {
 			for (let index = 0; index < rewardContainerDetails.rewardCount; index++) {
-				newItemRequest.items.push({item_id: inventoryController.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool), count: 1});
+				const chosenRewardItemTpl = inventoryController.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool);
+				const existingItemInRequest = newItemRequest.items.find(x => x.item_id == chosenRewardItemTpl);
+				
+				if (existingItemInRequest) {
+					// Exists in request already, increment count
+					existingItemInRequest.count++;
+				} else {
+					newItemRequest.items.push({item_id: chosenRewardItemTpl, count: 1});
+				}
 			}
 		}
 
