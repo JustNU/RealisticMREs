@@ -51,7 +51,9 @@ class Mod {
 		//adjust secure container filters
 		for (const item in database.templates.items) {
 			if (database.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
-				database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["590c5d4b86f774784e1b9c45", "590c5f0d86f77413997acfab"]);
+				if (database.templates.items[item]._props.Grids[0]._props.filters[0]) {
+					database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["590c5d4b86f774784e1b9c45", "590c5f0d86f77413997acfab"]);
+				}
 			}
 		}
 	}
